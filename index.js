@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
 import chatRouter from "./routes/chat.js";
 import cors from "cors";
+import uploadRouter from "./routes/upload.js";
+
 dotenv.config();
 const app = express();
 
@@ -34,6 +36,8 @@ app.get("/api/debug", (req, res) => {
   });
 });
 app.use("/api/chat", chatRouter);
+app.use("/api/upload", uploadRouter);
+
 // ✅ Start the server on the port provided by Render
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

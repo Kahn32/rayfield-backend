@@ -2,10 +2,19 @@ import express from "express";
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
 import chatRouter from "./routes/chat.js";
-
+import cors from "cors";
 dotenv.config();
 const app = express();
 
+
+
+
+// ✅ Allow requests from frontend
+app.use(cors({
+  origin: "https://rayfield-frontend.vercel.app", // 👈 Your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 // Initialize Supabase
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 app.use((req, _res, next) => {
@@ -25,8 +34,5 @@ app.get("/api/debug", (req, res) => {
   });
 });
 app.use("/api/chat", chatRouter);
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Backend server running on port ${PORT}`);
-});
+
 export default app;
